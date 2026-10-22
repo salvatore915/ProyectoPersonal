@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Configurador de PC</string>
+    <string name="titulo_main">Añadir Componente de PC</string>
+    <string name="hint_nombre">Nombre del componente (ej. Core i7, RTX 4070)</string>
+    <string name="hint_precio">Precio en € (ej. 349.99)</string>
+    <string name="label_categoria">Categoría:</string>
+    <string name="boton_agregar">Añadir Componente</string>
+    <string name="boton_ver_historial">Ver Lista de Componentes</string>
+    <string name="titulo_historial">Lista de Componentes</string>
+    <string name="boton_volver">Volver</string>
+    <string name="error_nombre_vacio">Escribe el nombre del componente antes de continuar</string>
+    <string name="error_precio_vacio">Escribe el precio antes de continuar</string>
+    <string name="error_precio_invalido">El precio tiene que ser un número válido mayor que 0</string>
+</resources>

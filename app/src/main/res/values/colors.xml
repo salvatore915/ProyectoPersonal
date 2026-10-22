@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pc_fondo">#F3F4F9</color>
+    <color name="pc_primario">#2F5BEA</color>
+    <color name="pc_texto">#1B1F3B</color>
+    <color name="pc_gris">#6B7280</color>
+    <color name="pc_tarjeta">#FFFFFF</color>
+    <color name="pc_borde">#DDE1EE</color>
+    <color name="pc_resumen">#E3EAFF</color>
+</resources>

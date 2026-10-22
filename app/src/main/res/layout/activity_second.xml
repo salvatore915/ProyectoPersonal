@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/pc_fondo"
+    android:padding="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@drawable/fondo_tarjeta"
+        android:padding="24dp"
+        android:layout_marginBottom="24dp">
+
+        <ImageView
+            android:id="@+id/imagenResultado"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:contentDescription="Imagen del componente"
+            android:src="@drawable/img_cpu"
+            android:layout_marginBottom="20dp" />
+
+        <TextView
+            android:id="@+id/textoNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/pc_texto"
+            android:gravity="center"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/textoDetalle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/pc_gris"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/botonVolver"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:text="@string/boton_volver"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/fondo_boton_principal" />
+
+</LinearLayout>

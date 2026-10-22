@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pc_fondo"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/titulo_historial"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/pc_texto"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/textoResumenHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: 0 componentes | 0,00 €"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/pc_primario"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/fondo_resumen"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/botonVolverHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/boton_volver"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/fondo_boton_principal" />
+
+</LinearLayout>
