@@ -22,5 +22,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ProyectoPersonal"
+rootProject.name = "TORRECOMPONENTS"
 include(":app")
