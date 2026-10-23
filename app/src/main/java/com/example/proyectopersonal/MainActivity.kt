@@ -27,6 +27,9 @@ class MainActivity : ComponentActivity() {
         val precioGuardado = prefs.getString("PRECIO_GUARDADO", "")
         editPrecio.setText(precioGuardado)
 
+        val categoriaGuardada = prefs.getInt("CATEGORIA_GUARDADA", 0)
+        spinnerCategoria.setSelection(categoriaGuardada)
+
         boton.setOnClickListener {
             val nombre = editNombre.text.toString()
             val precioTexto = editPrecio.text.toString()
@@ -46,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     Toast.makeText(this, getString(R.string.error_precio_invalido), Toast.LENGTH_SHORT).show()
                 }
                 else -> {
-                    prefs.edit().putString("NOMBRE_GUARDADO", nombre).putString("PRECIO_GUARDADO", precioTexto).apply()
+                    prefs.edit().putString("NOMBRE_GUARDADO", nombre).putString("PRECIO_GUARDADO", precioTexto).putInt("CATEGORIA_GUARDADA", spinnerCategoria.selectedItemPosition).apply()
 
                     val precio = precioTexto.toDouble()
                     Historial.componentes.add(Componente(nombre, precio, categoria))

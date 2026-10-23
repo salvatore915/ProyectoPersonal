@@ -47,4 +47,13 @@
         android:textStyle="bold"
         android:textColor="@color/pc_primario" />
 
+    <ImageButton
+        android:id="@+id/botonEliminarFila"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="Eliminar componente"
+        android:src="@android:drawable/ic_menu_delete" />
+
 </LinearLayout>

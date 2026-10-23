@@ -1,5 +1,4 @@
 package com.example.proyectopersonal
-
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import android.widget.ImageButton
 
 class HistorialAdapter(private val componentes: List<Componente>) :
     RecyclerView.Adapter<HistorialAdapter.ComponenteViewHolder>() {
@@ -16,6 +16,7 @@ class HistorialAdapter(private val componentes: List<Componente>) :
         val textoNombre: TextView = view.findViewById(R.id.textoNombreFila)
         val textoCategoria: TextView = view.findViewById(R.id.textoCategoriaFila)
         val textoPrecio: TextView = view.findViewById(R.id.textoPrecioFila)
+        val botonEliminar: ImageButton = view.findViewById(R.id.botonEliminarFila)   // <- nuevo boton para eliminar
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponenteViewHolder {
@@ -46,6 +47,12 @@ class HistorialAdapter(private val componentes: List<Componente>) :
             intent.putExtra("PRECIO_EXTRA", componente.precio)
             intent.putExtra("CATEGORIA_EXTRA", componente.categoria)
             holder.itemView.context.startActivity(intent)
+        }
+
+        //nuevo holder para realizar la operacion de borrado
+        holder.botonEliminar.setOnClickListener {
+            Historial.componentes.removeAt(position)
+            notifyDataSetChanged()
         }
     }
 
