@@ -21,7 +21,7 @@ class HistorialAdapter(private val componentes: List<Componente>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponenteViewHolder {
         val vista = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fila_persona, parent, false)
+            .inflate(R.layout.fila_componente, parent, false)
         return ComponenteViewHolder(vista)
     }
 
