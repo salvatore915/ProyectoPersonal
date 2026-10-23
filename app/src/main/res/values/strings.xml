@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Configurador de PC</string>
-    <string name="titulo_main">Añadir Componente de PC</string>
-    <string name="hint_nombre">Nombre del componente (ej. Core i7, RTX 4070)</string>
-    <string name="hint_precio">Precio en € (ej. 349.99)</string>
+    <string name="app_name"> TORRESCOMS Configurador de PC</string>
+    <string name="titulo_main">Añadir componentes a la lista</string>
+    <string name="hint_nombre">Nombre del componente (ej. Core i7, RTX 5090)</string>
+    <string name="hint_precio">Precio en € (ej. 500.99)</string>
     <string name="label_categoria">Categoría:</string>
     <string name="boton_agregar">Añadir Componente</string>
     <string name="boton_ver_historial">Ver Lista de Componentes</string>

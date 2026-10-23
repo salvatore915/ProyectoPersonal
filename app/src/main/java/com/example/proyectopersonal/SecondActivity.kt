@@ -38,7 +38,7 @@ class SecondActivity : ComponentActivity() {
         val sonidoId: Int
         when {
             precio < 250 -> sonidoId = R.raw.sonido1
-            precio < 500 -> sonidoId = R.raw.sonido2
+            precio > 750 -> sonidoId = R.raw.sonido2
             else -> sonidoId = R.raw.sonido3
         }
 
