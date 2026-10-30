@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageButton
 
-class HistorialAdapter(private val componentes: List<Componente>) :
-    RecyclerView.Adapter<HistorialAdapter.ComponenteViewHolder>() {
+class HistorialAdapter(
+    private val componentes: MutableList<Componente>,
+    private val onItemDeleted: () -> Unit = {}
+) : RecyclerView.Adapter<HistorialAdapter.ComponenteViewHolder>() {
 
     class ComponenteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imagenCategoria: ImageView = view.findViewById(R.id.imagenCategoriaFila)
@@ -51,8 +53,13 @@ class HistorialAdapter(private val componentes: List<Componente>) :
 
         //nuevo holder para realizar la operacion de borrado
         holder.botonEliminar.setOnClickListener {
-            Historial.componentes.removeAt(position)
-            notifyDataSetChanged()
+            val pos = holder.bindingAdapterPosition
+            if (pos != RecyclerView.NO_POSITION && pos < componentes.size) {
+                componentes.removeAt(pos)
+                notifyItemRemoved(pos)
+                notifyItemRangeChanged(pos, componentes.size - pos)
+                onItemDeleted()
+            }
         }
     }
 
