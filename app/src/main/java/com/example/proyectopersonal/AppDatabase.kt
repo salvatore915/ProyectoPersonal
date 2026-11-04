@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Componente::class], version = 1)
+@Database(entities = [Componente::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun componenteDao(): ComponenteDao
@@ -20,7 +20,7 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "componentes_db"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 instancia = nueva
                 nueva
             }

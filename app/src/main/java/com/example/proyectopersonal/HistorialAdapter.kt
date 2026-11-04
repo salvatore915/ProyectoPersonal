@@ -1,4 +1,5 @@
 package com.example.proyectopersonal
+
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ class HistorialAdapter(
 
     class ComponenteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imagenCategoria: ImageView = view.findViewById(R.id.imagenCategoriaFila)
+        val ivFoto: ImageView = view.findViewById(R.id.ivFoto)
         val textoNombre: TextView = view.findViewById(R.id.textoNombreFila)
         val textoCategoria: TextView = view.findViewById(R.id.textoCategoriaFila)
         val textoPrecio: TextView = view.findViewById(R.id.textoPrecioFila)
@@ -33,7 +35,7 @@ class HistorialAdapter(
         holder.textoCategoria.text = "Categoría: ${componente.categoria}"
         holder.textoPrecio.text = "${componente.precio} €"
 
-        val categoria = componente.categoria.uppercase()
+        val categoria = (componente.categoria ?: "").uppercase()
         when (categoria) {
             "CPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_cpu)
             "GPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_gpu)
@@ -42,7 +44,15 @@ class HistorialAdapter(
             else -> holder.imagenCategoria.setImageResource(R.drawable.img_other)
         }
 
-        // Al tocar una fila se abre SecondActivity con los datos de ese componente
+        // Lógica para mostrar u ocultar la foto en la fila del historial[cite: 7]
+        val bitmap = Fotos.cargar(componente.fotoPath)
+        if (bitmap != null) {
+            holder.ivFoto.setImageBitmap(bitmap)
+            holder.ivFoto.visibility = View.VISIBLE
+        } else {
+            holder.ivFoto.visibility = View.GONE
+        }
+
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, SecondActivity::class.java)
             intent.putExtra("NOMBRE_EXTRA", componente.nombre)
@@ -51,7 +61,6 @@ class HistorialAdapter(
             holder.itemView.context.startActivity(intent)
         }
 
-        // Envía el componente correspondiente al evento de borrado
         holder.botonEliminar.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && pos < componentes.size) {

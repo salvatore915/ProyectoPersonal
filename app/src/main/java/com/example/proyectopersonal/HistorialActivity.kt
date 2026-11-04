@@ -3,13 +3,13 @@ package com.example.proyectopersonal
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 
-class HistorialActivity : ComponentActivity() {
+class HistorialActivity : AppCompatActivity() {
     private lateinit var textoResumen: TextView
     private lateinit var recycler: RecyclerView
     private val dao by lazy { AppDatabase.obtener(this).componenteDao() }
