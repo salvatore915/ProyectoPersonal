@@ -18,7 +18,7 @@ class HistorialActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_historial)
 
-        textoResumen = findViewById<TextView>(R.id.textoResumenHistorial)
+        textoResumen = findViewById(R.id.textoResumenHistorial)
         recycler = findViewById<RecyclerView>(R.id.recyclerHistorial)
         val botonVolver = findViewById<Button>(R.id.botonVolverHistorial)
 
@@ -34,27 +34,27 @@ class HistorialActivity : ComponentActivity() {
         cargarDatosYActualizar()
     }
 
-    private fun cargarDatosYActualizar() {
+    private fun cargarDatosYActualizar(categoriaFiltro: String? = null) {
         lifecycleScope.launch {
-            // Obtenemos los datos directamente de la base de datos[cite: 3, 4]
-            val listaComponentes = dao.obtenerTodos().toMutableList()
-
-            recycler.adapter = HistorialAdapter(listaComponentes) { componenteParaBorrar ->
-                // Al pulsar eliminar, borramos de la BD y recargamos la lista[cite: 3, 5]
-                lifecycleScope.launch {
-                    dao.borrar(componenteParaBorrar)
-                    cargarDatosYActualizar()
-                }
+            val listaComponentes = if (categoriaFiltro != null) {
+                dao.obtenerPorCategoria(categoriaFiltro).toMutableList()
+            } else {
+                dao.obtenerTodos().toMutableList()
             }
 
-            actualizarResumen(listaComponentes)
-        }
-    }
+            val totalComponentesBD = dao.contarComponentes()
 
-    private fun actualizarResumen(lista: List<Componente>) {
-        val cantidad = lista.size
-        val total = lista.sumOf { it.precio }
-        val totalFormateado = String.format("%.2f", total)
-        textoResumen.text = "Total: $cantidad componentes | $totalFormateado €"
+            val sumaPrecios = listaComponentes.sumOf { it.precio }
+            val totalFormateado = String.format("%.2f", sumaPrecios)
+
+            textoResumen.text = "Total en BD: $totalComponentesBD | Mostrados: ${listaComponentes.size} | Precio: $totalFormateado €"
+
+            recycler.adapter = HistorialAdapter(listaComponentes) { componenteParaBorrar ->
+                lifecycleScope.launch {
+                    dao.borrar(componenteParaBorrar)
+                    cargarDatosYActualizar(categoriaFiltro)
+                }
+            }
+        }
     }
 }
