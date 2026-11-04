@@ -39,7 +39,7 @@ class SecondActivity : ComponentActivity() {
         when {
             precio < 450 -> sonidoId = R.raw.sonido1
             precio > 450 -> sonidoId = R.raw.sonido2
-            else -> sonidoId = R.raw.sonido3
+            else -> sonidoId = R.raw.sonido2
         }
 
         reproductor = MediaPlayer.create(this, sonidoId)
