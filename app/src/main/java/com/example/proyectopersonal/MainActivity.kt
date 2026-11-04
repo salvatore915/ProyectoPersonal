@@ -7,6 +7,8 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +21,11 @@ class MainActivity : ComponentActivity() {
         val boton = findViewById<Button>(R.id.botonAgregar)
         val botonVerHistorial = findViewById<Button>(R.id.botonVerHistorial)
 
+        val dao = AppDatabase.obtener(this).componenteDao()
+
         val prefs = getSharedPreferences("MisDatos", MODE_PRIVATE)
         val nombreGuardado = prefs.getString("NOMBRE_GUARDADO", "")
         editNombre.setText(nombreGuardado)
-
 
         val precioGuardado = prefs.getString("PRECIO_GUARDADO", "")
         editPrecio.setText(precioGuardado)
@@ -52,13 +55,17 @@ class MainActivity : ComponentActivity() {
                     prefs.edit().putString("NOMBRE_GUARDADO", nombre).putString("PRECIO_GUARDADO", precioTexto).putInt("CATEGORIA_GUARDADA", spinnerCategoria.selectedItemPosition).apply()
 
                     val precio = precioTexto.toDouble()
-                    Historial.componentes.add(Componente(nombre, precio, categoria))
+                    val nuevoComponente = Componente(nombre = nombre, precio = precio, categoria = categoria)
 
-                    val intent = Intent(this, SecondActivity::class.java)
-                    intent.putExtra("NOMBRE_EXTRA", nombre)
-                    intent.putExtra("PRECIO_EXTRA", precio)
-                    intent.putExtra("CATEGORIA_EXTRA", categoria)
-                    startActivity(intent)
+                    lifecycleScope.launch {
+                        dao.insertar(nuevoComponente)
+
+                        val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                        intent.putExtra("NOMBRE_EXTRA", nombre)
+                        intent.putExtra("PRECIO_EXTRA", precio)
+                        intent.putExtra("CATEGORIA_EXTRA", categoria)
+                        startActivity(intent)
+                    }
                 }
             }
         }
@@ -68,12 +75,17 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    // onResume se ejecuta cada vez que vuelves a esta pantalla, así el resumen siempre está al día
+    // Se actualiza el resumen consultando la base de datos cada vez que la pantalla vuelve a ser visible[cite: 4, 5]
     override fun onResume() {
         super.onResume()
         val textoResumen = findViewById<TextView>(R.id.textoResumen)
-        val cantidad = Historial.componentes.size
-        val total = String.format("%.2f", Historial.obtenerTotalPrecio())
-        textoResumen.text = "Componentes: $cantidad | Total: $total €"
+        val dao = AppDatabase.obtener(this).componenteDao()
+        lifecycleScope.launch {
+            val lista = dao.obtenerTodos()
+            val cantidad = lista.size
+            val total = lista.sumOf { it.precio }
+            val totalFormateado = String.format("%.2f", total)
+            textoResumen.text = "Componentes: $cantidad | Total: $totalFormateado €"
+        }
     }
 }

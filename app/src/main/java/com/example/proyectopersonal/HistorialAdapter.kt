@@ -10,7 +10,7 @@ import android.widget.ImageButton
 
 class HistorialAdapter(
     private val componentes: MutableList<Componente>,
-    private val onItemDeleted: () -> Unit = {}
+    private val onItemDeleted: (Componente) -> Unit
 ) : RecyclerView.Adapter<HistorialAdapter.ComponenteViewHolder>() {
 
     class ComponenteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -18,7 +18,7 @@ class HistorialAdapter(
         val textoNombre: TextView = view.findViewById(R.id.textoNombreFila)
         val textoCategoria: TextView = view.findViewById(R.id.textoCategoriaFila)
         val textoPrecio: TextView = view.findViewById(R.id.textoPrecioFila)
-        val botonEliminar: ImageButton = view.findViewById(R.id.botonEliminarFila)   // <- nuevo boton para eliminar
+        val botonEliminar: ImageButton = view.findViewById(R.id.botonEliminarFila)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponenteViewHolder {
@@ -51,14 +51,11 @@ class HistorialAdapter(
             holder.itemView.context.startActivity(intent)
         }
 
-        //nuevo holder para realizar la operacion de borrado
+        // Envía el componente correspondiente al evento de borrado
         holder.botonEliminar.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && pos < componentes.size) {
-                componentes.removeAt(pos)
-                notifyItemRemoved(pos)
-                notifyItemRangeChanged(pos, componentes.size - pos)
-                onItemDeleted()
+                onItemDeleted(componentes[pos])
             }
         }
     }
