@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pc_fondo"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Encabezado con Botón Volver -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnVolverDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="← Volver"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/fondo_boton_principal"
+                app:backgroundTint="@null"
+                android:textSize="13sp"
+                android:layout_marginEnd="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Detalle del Componente"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/pc_texto" />
+
+        </LinearLayout>
+
+        <!-- Tarjeta Principal de Información -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/fondo_tarjeta"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Imagen remota de alta resolución cargada con Glide -->
+            <ImageView
+                android:id="@+id/ivDetalleProducto"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:scaleType="fitCenter"
+                android:background="#FAFAFA"
+                android:contentDescription="Foto del producto"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvDetalleTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/pc_texto"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Marca y Categoría -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/tvDetalleMarca"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fondo_resumen"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="Marca"
+                    android:textColor="@color/pc_primario"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/tvDetalleCategoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/fondo_resumen"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4dp"
+                    android:text="Categoría"
+                    android:textColor="@color/pc_primario"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!-- Precio y Descuento -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/tvDetallePrecio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/pc_primario"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:id="@+id/tvDetalleStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/pc_verde"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- Valoración -->
+            <TextView
+                android:id="@+id/tvDetalleRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/pc_estrella"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Separador -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/pc_borde"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Descripción -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Descripción técnica:"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/pc_texto"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:id="@+id/tvDetalleDescripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/pc_gris"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="16dp" />
+
+        </LinearLayout>
+
+        <!-- Botón de Acción Propia: Añadir al PC -->
+        <Button
+            android:id="@+id/btnAgregarAlPresupuesto"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="➕ Añadir a mis componentes (TORRECOMS)"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/fondo_boton_principal"
+            app:backgroundTint="@null"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <TextView
+            android:id="@+id/tvConfirmacionGuardado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/pc_verde"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:layout_marginBottom="12dp" />
+
+    </LinearLayout>
+
+</ScrollView>

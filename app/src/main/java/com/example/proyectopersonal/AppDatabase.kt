@@ -5,10 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Componente::class], version = 2)
+@Database(entities = [Componente::class, ProductoOnline::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun componenteDao(): ComponenteDao
+    abstract fun productoOnlineDao(): ProductoOnlineDao
 
     companion object {
         @Volatile
