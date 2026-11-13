@@ -7,4 +7,8 @@
     <color name="pc_tarjeta">#FFFFFF</color>
     <color name="pc_borde">#DDE1EE</color>
     <color name="pc_resumen">#E3EAFF</color>
+    <color name="pc_aviso_fondo">#FFF3CD</color>
+    <color name="pc_aviso_texto">#856404</color>
+    <color name="pc_verde">#2E7D32</color>
+    <color name="pc_estrella">#FFB300</color>
 </resources>

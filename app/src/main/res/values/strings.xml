@@ -6,6 +6,7 @@
     <string name="label_categoria">Categoría:</string>
     <string name="boton_agregar">Añadir Componente</string>
     <string name="boton_ver_historial">Ver Lista de Componentes</string>
+    <string name="boton_catalogo_online">🌐 Explorar Catálogo Online (Hardware)</string>
     <string name="titulo_historial">Lista de Componentes</string>
     <string name="boton_volver">Volver</string>
     <string name="error_nombre_vacio">Escribe el nombre del componente antes de continuar</string>
