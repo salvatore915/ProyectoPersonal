@@ -85,6 +85,7 @@ class MainActivity : AppCompatActivity() {
         val spinnerCategoria = findViewById<Spinner>(R.id.spinnerCategoria)
         val boton = findViewById<Button>(R.id.botonAgregar)
         val botonVerHistorial = findViewById<Button>(R.id.botonVerHistorial)
+        val botonCatalogoOnline = findViewById<Button>(R.id.botonCatalogoOnline)
 
         // --- ENLACES DE CÁMARA, GALERÍA Y GPS (DENTRO DE onCreate) ---
         ivFoto = findViewById(R.id.ivFoto)
@@ -183,6 +184,10 @@ class MainActivity : AppCompatActivity() {
 
         botonVerHistorial.setOnClickListener {
             startActivity(Intent(this, HistorialActivity::class.java))
+        }
+
+        botonCatalogoOnline.setOnClickListener {
+            startActivity(Intent(this, CatalogoActivity::class.java))
         }
     }
 

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/pc_fondo"
+    android:padding="16dp">
+
+    <!-- Encabezado con Botón Volver y Título -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/btnVolverCatalogo"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="← Volver"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/fondo_boton_principal"
+            app:backgroundTint="@null"
+            android:textSize="13sp"
+            android:layout_marginEnd="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Catálogo Online"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/pc_texto" />
+
+    </LinearLayout>
+
+    <!-- Barra de Búsqueda -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="10dp">
+
+        <EditText
+            android:id="@+id/editBusquedaCatalogo"
+            android:layout_width="0dp"
+            android:layout_height="46dp"
+            android:layout_weight="1"
+            android:background="@drawable/fondo_input"
+            android:hint="Buscar portátil, accesorio..."
+            android:paddingHorizontal="14dp"
+            android:textSize="14sp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
+            android:textColor="@color/pc_texto" />
+
+        <Button
+            android:id="@+id/btnBuscarCatalogo"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:text="Buscar"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/fondo_boton_principal"
+            app:backgroundTint="@null"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+    <!-- Filtros rápidos por categoría -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/chipTodos"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="Todos"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/fondo_boton_principal"
+            app:backgroundTint="@null"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/chipLaptops"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="Laptops"
+            android:textSize="12sp"
+            android:textColor="@color/pc_texto"
+            android:background="@drawable/fondo_boton_secundario"
+            app:backgroundTint="@null"
+            android:layout_marginHorizontal="2dp" />
+
+        <Button
+            android:id="@+id/chipAccesorios"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:text="Accesorios"
+            android:textSize="12sp"
+            android:textColor="@color/pc_texto"
+            android:background="@drawable/fondo_boton_secundario"
+            app:backgroundTint="@null"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
+
+    <!-- Banner informativo de Modo Sin Conexión / Caché -->
+    <LinearLayout
+        android:id="@+id/layoutAvisoOffline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fondo_aviso"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvAvisoOffline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⚠️ Sin conexión a Internet. Mostrando datos guardados en Room."
+            android:textSize="13sp"
+            android:textColor="@color/pc_aviso_texto" />
+
+    </LinearLayout>
+
+    <!-- Indicador de Carga -->
+    <ProgressBar
+        android:id="@+id/progressBarCatalogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="32dp"
+        android:visibility="gone" />
+
+    <!-- Mensaje de Error y Reintento -->
+    <LinearLayout
+        android:id="@+id/layoutErrorCatalogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tvMensajeError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Error al cargar datos"
+            android:textColor="@color/pc_gris"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginBottom="12dp" />
+
+        <Button
+            android:id="@+id/btnReintentar"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:text="Reintentar"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/fondo_boton_principal"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+    <!-- Lista de Productos -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCatalogo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

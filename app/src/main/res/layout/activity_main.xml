@@ -117,6 +117,16 @@
         android:text="@string/boton_ver_historial"
         android:textColor="#FFFFFF"
         android:background="@drawable/fondo_boton_principal"
+        app:backgroundTint="@null"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/botonCatalogoOnline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/boton_catalogo_online"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/fondo_boton_principal"
         app:backgroundTint="@null" />
 
     <TextView
