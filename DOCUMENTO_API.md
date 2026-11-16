@@ -1,46 +1,51 @@
-# Propuesta y Documentación de la API · Versión 2
+# Documento de la API · Versión 2
 
-**Proyecto:** TORRECOMS - Configurador de PC  
-**Alumno / Desarrollador:** salvatore915  
-**Rama:** `Proyecto-V2`  
+**Proyecto:** TORRESCOMS Configurador de PC
+**Autor:** salvatore915
+**Rama:** `Proyecto-V2`
 
----
+## API utilizada
 
-## 1. Nombre de la API
-**DummyJSON Products API** (Módulo de Hardware, Laptops y Accesorios Tecnológicos).
+**DummyJSON · Products** (API pública de productos de prueba).
 
-## 2. Dirección Web y Endpoints
-- **URL Base:** `https://dummyjson.com/`
-- **Documentación oficial:** `https://dummyjson.com/docs/products`
-- **Endpoints utilizados:**
-  - `GET /products/category/laptops` — Obtiene la lista de ordenadores portátiles y estaciones de trabajo.
-  - `GET /products/category/mobile-accessories` — Obtiene componentes y periféricos complementarios.
-  - `GET /products/search?q={query}` — Búsqueda en tiempo real de productos/componentes por texto o marca.
-  - `GET /products/{id}` — Consulta detallada del producto individual.
+- Dirección base: `https://dummyjson.com/`
+- Documentación oficial: <https://dummyjson.com/docs/products>
+- Clave o registro: **no hacen falta**. Ningún ejemplo de la documentación oficial usa claves ni cabeceras de autenticación.
+- Formato: JSON sobre HTTPS, con peticiones `GET`.
+- Imágenes: URLs de `cdn.dummyjson.com`, que cargo con Glide.
 
-## 3. Características Técnicas
-- **Autenticación:** Pública y 100% gratuita. **No requiere registro ni API Key** ni encabezados de autorización.
-- **Formato:** Respuestas en formato **JSON** estructurado estándar (REST / HTTP GET).
-- **Imágenes:** Servidas a través de CDN de alta velocidad (`https://cdn.dummyjson.com/...`) en formato WebP optimizado para dispositivos móviles, compatible con Glide.
+## Endpoints que uso
 
-## 4. Finalidad y Justificación de la Elección
-La aplicación **TORRECOMS** fue concebida como un gestor y configurador de componentes de PC (CPUs, GPUs, RAM, Discos y Periféricos). 
+| Petición | Para qué la uso |
+| --- | --- |
+| `GET /products/category/laptops` | Lista de portátiles |
+| `GET /products/category/mobile-accessories` | Lista de accesorios |
+| `GET /products/search?q={texto}` | Buscador |
+| `GET /products/{id}` | Ficha de un producto |
 
-La integración de la API DummyJSON encaja de forma natural con esta temática porque:
-1. Proporciona datos reales y actualizados de ordenadores y tecnología (marcas reconocidas como Apple, Asus, Dell, Lenovo, HP).
-2. Ofrece especificaciones técnicas concretas: título, descripción detallada, marca, categoría, precio oficial, stock disponible, valoración de usuarios (rating) y galerías fotográficas.
-3. Permite al usuario consultar un catálogo de hardware en línea e **importar directamente componentes al presupuesto local de su ordenador**, integrando la tienda online con la base de datos local de la app.
+Las listas responden con `products`, `total`, `skip` y `limit`.
 
-## 5. Datos Concretos Utilizados en la App
-| Campo JSON | Tipo de Dato | Uso en la Aplicación |
-| :--- | :--- | :--- |
-| `id` | `Int` | Clave primaria para indexación y caché local en Room. |
-| `title` | `String` | Nombre comercial del producto mostrado en listas y detalle. |
-| `description` | `String` | Ficha técnica y especificaciones detalladas en la vista de detalle. |
-| `price` | `Double` | Precio en euros (€) para presupuestar la torre o equipo. |
-| `category` | `String` | Categorización del hardware ("laptops", "accessories"). |
-| `brand` | `String` | Fabricante del equipo (Apple, ASUS, Dell, etc.). |
-| `thumbnail` | `String` | URL de la imagen principal cargada con **Glide** en listas y detalle. |
-| `rating` | `Double` | Puntuación otorgada por la comunidad (estrellas ★). |
-| `stock` | `Int` | Disponibilidad de inventario en almacén. |
-| `discountPercentage` | `Double` | Descuento aplicable sobre el precio recomendado. |
+## Qué datos ofrece
+
+Hoy el catálogo que consulto tiene **19 productos**: 5 portátiles (Apple, Asus, Huawei, Lenovo y Dell) y 14 accesorios (auriculares, cargadores, soportes...). No incluye componentes sueltos como CPU, GPU, RAM o discos.
+
+## Por qué la elijo
+
+- Es gratuita, sin clave, y devuelve JSON con imágenes, lo que permite usar Retrofit, Room y Glide.
+- Tiene lista, búsqueda, filtro por categoría y detalle, que son las pantallas que pide el proyecto.
+- Se relaciona con mi app: el usuario puede consultar equipos y accesorios de tecnología y añadirlos a su lista de componentes.
+
+**Limitación:** al ser datos de prueba, no son componentes reales de un PC. Los productos que se añaden a la lista local entran como categoría "Otro", salvo que su título contenga SSD, RAM o CPU.
+
+## Datos que muestro en la app
+
+| Campo | Dónde se ve |
+| --- | --- |
+| `id` | Clave en la caché de Room |
+| `title` | Lista y detalle |
+| `brand` y `category` | Lista y detalle |
+| `price` | Lista y detalle (la API no indica moneda; la app lo muestra con "€") |
+| `rating` y `stock` | Lista y detalle |
+| `description` | Detalle |
+| `thumbnail` | Imagen en lista y detalle |
+| `discountPercentage` | Se guarda en Room |
