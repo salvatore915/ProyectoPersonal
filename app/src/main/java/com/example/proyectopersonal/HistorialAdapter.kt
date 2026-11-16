@@ -44,13 +44,16 @@ class HistorialAdapter(
             else -> holder.imagenCategoria.setImageResource(R.drawable.img_other)
         }
 
-        // Lógica para mostrar u ocultar la foto en la fila del historial[cite: 7]
+        // Si el componente tiene foto (hecha con la cámara o descargada de la API) se muestra solo la foto;
+        // si no tiene, se muestra el icono de su categoría.
         val bitmap = Fotos.cargar(componente.fotoPath)
         if (bitmap != null) {
             holder.ivFoto.setImageBitmap(bitmap)
             holder.ivFoto.visibility = View.VISIBLE
+            holder.imagenCategoria.visibility = View.GONE
         } else {
             holder.ivFoto.visibility = View.GONE
+            holder.imagenCategoria.visibility = View.VISIBLE
         }
 
         holder.itemView.setOnClickListener {
@@ -58,6 +61,7 @@ class HistorialAdapter(
             intent.putExtra("NOMBRE_EXTRA", componente.nombre)
             intent.putExtra("PRECIO_EXTRA", componente.precio)
             intent.putExtra("CATEGORIA_EXTRA", componente.categoria)
+            intent.putExtra("FOTO_EXTRA", componente.fotoPath)
             holder.itemView.context.startActivity(intent)
         }
 

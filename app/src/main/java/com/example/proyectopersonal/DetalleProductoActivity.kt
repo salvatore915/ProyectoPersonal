@@ -11,7 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.proyectopersonal.network.RetrofitClient
 import com.example.proyectopersonal.repository.CatalogoRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class DetalleProductoActivity : AppCompatActivity() {
@@ -65,19 +67,36 @@ class DetalleProductoActivity : AppCompatActivity() {
         }
 
         btnAgregar.setOnClickListener {
-            val producto = productoActual
-            if (producto != null) {
-                lifecycleScope.launch {
-                    val exito = repository.agregarAComponentesLocales(producto)
-                    if (exito) {
-                        tvConfirmacion.visibility = View.VISIBLE
-                        tvConfirmacion.text = "✓ ¡Añadido a tus componentes locales de TORRECOMS!"
-                        Toast.makeText(this@DetalleProductoActivity, "Componente guardado en tu base de datos local", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this@DetalleProductoActivity, "Error al guardar localmente", Toast.LENGTH_SHORT).show()
-                    }
+            val producto = productoActual ?: return@setOnClickListener
+            btnAgregar.isEnabled = false          // evita añadir el mismo producto dos veces
+            lifecycleScope.launch {
+                // Primero se descarga la foto del producto al móvil y luego se guarda el componente con su ruta
+                val ruta = descargarFoto(producto.thumbnail)
+                val exito = repository.agregarAComponentesLocales(producto, ruta)
+                if (exito) {
+                    tvConfirmacion.visibility = View.VISIBLE
+                    tvConfirmacion.text = "✓ ¡Añadido a tus componentes locales de TORRECOMS!"
+                    Toast.makeText(this@DetalleProductoActivity, "Componente guardado en tu base de datos local", Toast.LENGTH_SHORT).show()
+                } else {
+                    btnAgregar.isEnabled = true
+                    Toast.makeText(this@DetalleProductoActivity, "Error al guardar localmente", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    // Descarga la foto del producto a la carpeta de fotos de la app. Devuelve la ruta, o null si falla.
+    private suspend fun descargarFoto(url: String?): String? = withContext(Dispatchers.IO) {
+        if (url.isNullOrBlank()) return@withContext null
+        val archivo = Fotos.crearArchivo(this@DetalleProductoActivity)
+        try {
+            java.net.URL(url).openStream().use { entrada ->
+                archivo.outputStream().use { salida -> entrada.copyTo(salida) }
+            }
+            archivo.absolutePath
+        } catch (e: Exception) {
+            archivo.delete()
+            null
         }
     }
 

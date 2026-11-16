@@ -23,16 +23,22 @@ class SecondActivity : AppCompatActivity() {
         val nombre = intent.getStringExtra("NOMBRE_EXTRA") ?: "Sin nombre"
         val precio = intent.getDoubleExtra("PRECIO_EXTRA", 0.0)
         val categoria = intent.getStringExtra("CATEGORIA_EXTRA") ?: "Otro"
+        val fotoPath = intent.getStringExtra("FOTO_EXTRA")
 
         textoNombre.text = nombre
         textoDetalle.text = "Categoría: $categoria\nPrecio: $precio €"
 
-        when (categoria.uppercase()) {
-            "CPU" -> imagenResultado.setImageResource(R.drawable.img_cpu)
-            "GPU" -> imagenResultado.setImageResource(R.drawable.img_gpu)
-            "RAM" -> imagenResultado.setImageResource(R.drawable.img_ram)
-            "DISCO" -> imagenResultado.setImageResource(R.drawable.img_storage)
-            else -> imagenResultado.setImageResource(R.drawable.img_other)
+        val bitmap = Fotos.cargar(fotoPath)
+        if (bitmap != null) {
+            imagenResultado.setImageBitmap(bitmap)
+        } else {
+            when (categoria.uppercase()) {
+                "CPU" -> imagenResultado.setImageResource(R.drawable.img_cpu)
+                "GPU" -> imagenResultado.setImageResource(R.drawable.img_gpu)
+                "RAM" -> imagenResultado.setImageResource(R.drawable.img_ram)
+                "DISCO" -> imagenResultado.setImageResource(R.drawable.img_storage)
+                else -> imagenResultado.setImageResource(R.drawable.img_other)
+            }
         }
 
         val sonidoId: Int

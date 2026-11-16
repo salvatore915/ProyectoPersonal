@@ -118,7 +118,11 @@ class CatalogoRepository(
     }
 
     // Funcionalidad propia integrada: Añadir producto de la tienda online al presupuesto local de TORRECOMS
-    suspend fun agregarAComponentesLocales(producto: ProductoOnline): Boolean = withContext(Dispatchers.IO) {
+    // fotoPath = ruta de la foto del producto ya descargada en el móvil (null si no hay)
+    suspend fun agregarAComponentesLocales(
+        producto: ProductoOnline,
+        fotoPath: String? = null
+    ): Boolean = withContext(Dispatchers.IO) {
         try {
             val catMapeada = when {
                 producto.category.contains("laptop", ignoreCase = true) -> "Otro"
@@ -134,7 +138,7 @@ class CatalogoRepository(
                 categoria = catMapeada,
                 latitud = null,
                 longitud = null,
-                fotoPath = null
+                fotoPath = fotoPath
             )
             componenteDao.insertar(nuevoComponente)
             true
