@@ -42,8 +42,7 @@ data class ProductoDto(
         )
     }
 }
-
-interface DummyJsonApi {
+interface ApiService {
 
     @GET("products/category/laptops")
     suspend fun getLaptops(): ProductoListResponse
@@ -61,11 +60,11 @@ interface DummyJsonApi {
 object RetrofitClient {
     private const val BASE_URL = "https://dummyjson.com/"
 
-    val api: DummyJsonApi by lazy {
+    val api: ApiService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(DummyJsonApi::class.java)
+            .create(ApiService::class.java)
     }
 }

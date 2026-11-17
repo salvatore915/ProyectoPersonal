@@ -4,7 +4,7 @@ import com.example.proyectopersonal.Componente
 import com.example.proyectopersonal.ComponenteDao
 import com.example.proyectopersonal.ProductoOnline
 import com.example.proyectopersonal.ProductoOnlineDao
-import com.example.proyectopersonal.network.DummyJsonApi
+import com.example.proyectopersonal.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -14,7 +14,7 @@ sealed class ResultadoCatalogo {
 }
 
 class CatalogoRepository(
-    private val api: DummyJsonApi,
+    private val api: ApiService,
     private val productoDao: ProductoOnlineDao,
     private val componenteDao: ComponenteDao
 ) {
