@@ -28,12 +28,18 @@ data class ProductoDto(
     @SerializedName("discountPercentage") val discountPercentage: Double = 0.0
 ) {
     fun toEntity(): ProductoOnline {
+        val catTraducida = when (category.lowercase()) {
+            "laptops" -> "Portátiles"
+            "mobile-accessories" -> "Accesorios"
+            else -> category.replaceFirstChar { it.uppercase() }
+        }
+
         return ProductoOnline(
             id = id,
             title = title,
             description = description,
             price = price,
-            category = category,
+            category = catTraducida,
             brand = brand ?: "Genérico",
             thumbnail = thumbnail,
             rating = rating,
@@ -42,6 +48,7 @@ data class ProductoDto(
         )
     }
 }
+
 interface ApiService {
 
     @GET("products/category/laptops")
