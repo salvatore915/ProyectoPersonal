@@ -43,17 +43,14 @@ class HistorialAdapter(
             "DISCO" -> holder.imagenCategoria.setImageResource(R.drawable.img_storage)
             else -> holder.imagenCategoria.setImageResource(R.drawable.img_other)
         }
+        holder.imagenCategoria.visibility = View.VISIBLE
 
-        // Si el componente tiene foto (hecha con la cámara o descargada de la API) se muestra solo la foto;
-        // si no tiene, se muestra el icono de su categoría.
         val bitmap = Fotos.cargar(componente.fotoPath)
         if (bitmap != null) {
             holder.ivFoto.setImageBitmap(bitmap)
             holder.ivFoto.visibility = View.VISIBLE
-            holder.imagenCategoria.visibility = View.GONE
         } else {
             holder.ivFoto.visibility = View.GONE
-            holder.imagenCategoria.visibility = View.VISIBLE
         }
 
         holder.itemView.setOnClickListener {
