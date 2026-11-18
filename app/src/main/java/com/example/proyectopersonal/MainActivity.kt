@@ -49,11 +49,11 @@ class MainActivity : AppCompatActivity() {
         if (exito && archivo != null) {
             fotoPath = archivo.absolutePath
             ivFoto.setImageBitmap(Fotos.cargar(fotoPath))
+            getSharedPreferences("MisDatos", MODE_PRIVATE).edit().putString("FOTO_PERFIL", fotoPath).apply()
         } else {
             archivo?.delete()
         }
     }
-
     private val elegirDeGaleria = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri ->
@@ -62,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             if (ruta != null) {
                 fotoPath = ruta
                 ivFoto.setImageBitmap(Fotos.cargar(ruta))
+                getSharedPreferences("MisDatos", MODE_PRIVATE).edit().putString("FOTO_PERFIL", ruta).apply()
             }
         }
     }
@@ -123,6 +124,12 @@ class MainActivity : AppCompatActivity() {
             spinnerCategoria.setSelection(categoriaGuardada)
         }
 
+        val fotoGuardada = prefs.getString("FOTO_PERFIL", null)
+        if (fotoGuardada != null) {
+            fotoPath = fotoGuardada
+            ivFoto.setImageBitmap(Fotos.cargar(fotoGuardada))
+        }
+
         boton.setOnClickListener {
             val nombre = editNombre.text.toString().trim()
             val precioTextoOriginal = editPrecio.text.toString().trim()
@@ -163,10 +170,8 @@ class MainActivity : AppCompatActivity() {
                         try {
                             dao.insertar(nuevoComponente)
 
-                            fotoPath = null
                             latitud = null
                             longitud = null
-                            ivFoto.setImageDrawable(null)
 
                             val intent = Intent(this@MainActivity, SecondActivity::class.java)
                             intent.putExtra("NOMBRE_EXTRA", nombre)

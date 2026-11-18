@@ -1,5 +1,6 @@
 package com.example.proyectopersonal
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -35,22 +36,48 @@ class HistorialAdapter(
         holder.textoCategoria.text = "Categoría: ${componente.categoria}"
         holder.textoPrecio.text = "${componente.precio} €"
 
-        val categoria = (componente.categoria ?: "").uppercase()
-        when (categoria) {
-            "CPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_cpu)
-            "GPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_gpu)
-            "RAM" -> holder.imagenCategoria.setImageResource(R.drawable.img_ram)
-            "DISCO" -> holder.imagenCategoria.setImageResource(R.drawable.img_storage)
-            else -> holder.imagenCategoria.setImageResource(R.drawable.img_other)
-        }
-        holder.imagenCategoria.visibility = View.VISIBLE
+        val context = holder.itemView.context
+        val prefs = context.getSharedPreferences("MisDatos", Context.MODE_PRIVATE)
+        val fotoPerfilPrefs = prefs.getString("FOTO_PERFIL", null)
 
-        val bitmap = Fotos.cargar(componente.fotoPath)
-        if (bitmap != null) {
-            holder.ivFoto.setImageBitmap(bitmap)
-            holder.ivFoto.visibility = View.VISIBLE
+        val fotoPerfilPersona = fotoPerfilPrefs ?: componentes.firstOrNull {
+            it.categoria.uppercase() in listOf("CPU", "GPU", "RAM", "DISCO") && !it.fotoPath.isNullOrBlank()
+        }?.fotoPath
+
+        val bitmapPerfilPersona = Fotos.cargar(fotoPerfilPersona)
+        val bitmapComponente = Fotos.cargar(componente.fotoPath)
+        val categoria = (componente.categoria ?: "").uppercase()
+
+        if (categoria in listOf("CPU", "GPU", "RAM", "DISCO")) {
+            when (categoria) {
+                "CPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_cpu)
+                "GPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_gpu)
+                "RAM" -> holder.imagenCategoria.setImageResource(R.drawable.img_ram)
+                "DISCO" -> holder.imagenCategoria.setImageResource(R.drawable.img_storage)
+            }
+            holder.imagenCategoria.visibility = View.VISIBLE
+
+            val fotoPersona = bitmapComponente ?: bitmapPerfilPersona
+            if (fotoPersona != null) {
+                holder.ivFoto.setImageBitmap(fotoPersona)
+                holder.ivFoto.visibility = View.VISIBLE
+            } else {
+                holder.ivFoto.visibility = View.GONE
+            }
         } else {
-            holder.ivFoto.visibility = View.GONE
+            if (bitmapComponente != null) {
+                holder.imagenCategoria.setImageBitmap(bitmapComponente)
+            } else {
+                holder.imagenCategoria.setImageResource(R.drawable.img_other)
+            }
+            holder.imagenCategoria.visibility = View.VISIBLE
+
+            if (bitmapPerfilPersona != null) {
+                holder.ivFoto.setImageBitmap(bitmapPerfilPersona)
+                holder.ivFoto.visibility = View.VISIBLE
+            } else {
+                holder.ivFoto.visibility = View.GONE
+            }
         }
 
         holder.itemView.setOnClickListener {
