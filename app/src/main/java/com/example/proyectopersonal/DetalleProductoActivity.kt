@@ -72,7 +72,7 @@ class DetalleProductoActivity : AppCompatActivity() {
 
         btnAgregar.setOnClickListener {
             val producto = productoActual ?: return@setOnClickListener
-            btnAgregar.isEnabled = false          // evita añadir el mismo producto dos veces
+            btnAgregar.isEnabled = false
             lifecycleScope.launch {
                 val ruta = descargarFoto(producto.thumbnail)
                 val exito = repository.agregarAComponentesLocales(producto, ruta)

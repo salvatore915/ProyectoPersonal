@@ -1,6 +1,6 @@
 Documento de la API · Versión 2
 
-Proyecto: TORRESCOMS Configurador de PC
+Proyecto: TORRECOMS Configurador de PC
 Autor: salvatore915
 Rama: Proyecto-V2
 

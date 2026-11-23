@@ -21,7 +21,6 @@ class CatalogoRepository(
 
     suspend fun obtenerProductos(forzarRed: Boolean = false): ResultadoCatalogo = withContext(Dispatchers.IO) {
         try {
-            // Obtenemos laptops y accesorios relacionados con computación y tecnología
             val laptopsResp = api.getLaptops()
             val accesoriosResp = try {
                 api.getAccesorios()
@@ -97,8 +96,6 @@ class CatalogoRepository(
         }
     }
 
-    // Funcionalidad propia integrada: Añadir producto de la tienda online al presupuesto local de TORRECOMS
-    // fotoPath = ruta de la foto del producto ya descargada en el móvil (null si no hay)
     suspend fun agregarAComponentesLocales(
         producto: ProductoOnline,
         fotoPath: String? = null

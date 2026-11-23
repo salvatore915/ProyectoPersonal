@@ -1,6 +1,6 @@
 Memoria técnica · Versión 2
 
-Proyecto: TORRESCOMS Configurador de PC
+Proyecto: TORRECOMS Configurador de PC
 Autor: salvatore915
 Rama: Proyecto-V2
 
@@ -9,7 +9,7 @@ Rama: Proyecto-V2
 
 Permisos (AndroidManifest.xml): INTERNET y ACCESS_NETWORK_STATE.
 
-Uso Retrofit 2.11.0 con Gson. La interfaz DummyJsonApi y el objeto RetrofitClient están en network/DummyJsonApi.kt.
+Uso Retrofit 2.11.0 con Gson. La interfaz ApiService y el objeto RetrofitClient están en network/ApiService.kt.
 
 Uso corrutinas. Todas las funciones de la API son suspend y el repositorio trabaja con Dispatchers.IO. Así, la red nunca bloquea la pantalla principal.
 
@@ -39,7 +39,7 @@ El flujo de la app es este:
 
 CatalogoActivity usa CatalogoViewModel.
 CatalogoViewModel usa CatalogoRepository.
-CatalogoRepository usa tres cosas: DummyJsonApi (la red), ProductoOnlineDao (Room) y ComponenteDao (Room).
+CatalogoRepository usa tres cosas: ApiService (la red), ProductoOnlineDao (Room) y ComponenteDao (Room).
 
 Vista: CatalogoActivity muestra la lista, la búsqueda y los filtros. DetalleProductoActivity muestra la ficha del producto. CatalogoAdapter es el RecyclerView que usa Glide para las imágenes.
 
