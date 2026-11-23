@@ -1,9 +1,8 @@
 Documento de la API · Versión 2
 
 Proyecto: TORRECOMS Configurador de PC
-Autor: salvatore915
+Autor: Salvador Gómez
 Rama: Proyecto-V2
-
 
 1. API utilizada
 
