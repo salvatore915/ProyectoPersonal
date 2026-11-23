@@ -28,6 +28,11 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
 
     private var todosLosProductos: List<ProductoOnline> = emptyList()
 
+    private var cargadoDesdeCache = false
+
+    private fun avisoCarga(): String? =
+        if (cargadoDesdeCache) "Modo sin conexión: mostrando catálogo guardado en Room." else null
+
     init {
         cargarProductos()
     }
@@ -38,10 +43,11 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
             when (val resultado = repository.obtenerProductos(forzarRed)) {
                 is ResultadoCatalogo.Exito -> {
                     todosLosProductos = resultado.productos
+                    cargadoDesdeCache = resultado.esDesdeCache
                     _uiState.value = CatalogoUiState.Success(
                         productos = resultado.productos,
                         esOffline = resultado.esDesdeCache,
-                        mensajeAviso = if (resultado.esDesdeCache) "Modo sin conexión: mostrando catálogo guardado en Room." else null
+                        mensajeAviso = avisoCarga()
                     )
                 }
                 is ResultadoCatalogo.Error -> {
@@ -56,7 +62,8 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
             if (query.isBlank()) {
                 _uiState.value = CatalogoUiState.Success(
                     productos = todosLosProductos,
-                    esOffline = false
+                    esOffline = cargadoDesdeCache,
+                    mensajeAviso = avisoCarga()
                 )
                 return@launch
             }
@@ -78,20 +85,15 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
     }
 
     fun filtrarPorCategoria(categoria: String) {
-        if (categoria == "Todos") {
-            _uiState.value = CatalogoUiState.Success(
-                productos = todosLosProductos,
-                esOffline = false
-            )
-            return
-        }
-
-        val filtrados = todosLosProductos.filter {
-            it.category.contains(categoria, ignoreCase = true)
+        val lista = if (categoria == "Todos") {
+            todosLosProductos
+        } else {
+            todosLosProductos.filter { it.category.contains(categoria, ignoreCase = true) }
         }
         _uiState.value = CatalogoUiState.Success(
-            productos = filtrados,
-            esOffline = false
+            productos = lista,
+            esOffline = cargadoDesdeCache,
+            mensajeAviso = avisoCarga()
         )
     }
 }

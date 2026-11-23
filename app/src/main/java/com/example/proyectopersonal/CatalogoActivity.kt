@@ -101,12 +101,12 @@ class CatalogoActivity : AppCompatActivity() {
 
         chipLaptops.setOnClickListener {
             marcarChipActivo(chipLaptops, listOf(chipTodos, chipAccesorios))
-            viewModel.filtrarPorCategoria("laptops")
+            viewModel.filtrarPorCategoria("Portátiles")
         }
 
         chipAccesorios.setOnClickListener {
             marcarChipActivo(chipAccesorios, listOf(chipTodos, chipLaptops))
-            viewModel.filtrarPorCategoria("mobile-accessories")
+            viewModel.filtrarPorCategoria("Accesorios")
         }
 
         observarEstado()
