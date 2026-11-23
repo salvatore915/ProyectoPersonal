@@ -22,7 +22,7 @@ class CatalogoRepository(
 ) {
 
     // Obtiene portátiles y accesorios desde la API; si falla la red, recurre a la caché local de Room
-    suspend fun obtenerProductos(forzarRed: Boolean = false): ResultadoCatalogo = withContext(Dispatchers.IO) {
+    suspend fun obtenerProductos(): ResultadoCatalogo = withContext(Dispatchers.IO) {
         try {
             val laptopsResp = api.getLaptops()
             // Si falla la petición de accesorios, se ignora el error devolviendo null para no perder los portátiles

@@ -102,7 +102,7 @@ class CatalogoActivity : AppCompatActivity() {
 
         // Fuerza una nueva consulta a red al pulsar reintentar
         btnReintentar.setOnClickListener {
-            viewModel.cargarProductos(forzarRed = true)
+            viewModel.cargarProductos()
         }
 
         // Filtra por todos los productos y actualiza el estilo visual del filtro activo

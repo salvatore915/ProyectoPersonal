@@ -45,10 +45,10 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
     }
 
     // Solicita los productos al repositorio y actualiza `uiState` según el resultado
-    fun cargarProductos(forzarRed: Boolean = false) {
+    fun cargarProductos() {
         viewModelScope.launch {
             _uiState.value = CatalogoUiState.Loading
-            when (val resultado = repository.obtenerProductos(forzarRed)) {
+            when (val resultado = repository.obtenerProductos()) {
                 is ResultadoCatalogo.Exito -> {
                     todosLosProductos = resultado.productos
                     cargadoDesdeCache = resultado.esDesdeCache
