@@ -28,7 +28,7 @@ class CatalogoTest {
         assertEquals("MacBook Pro", entidad.title)
         assertEquals(1999.99, entidad.price, 0.001)
         assertEquals("Apple", entidad.brand)
-        assertEquals("laptops", entidad.category)
+        assertEquals("Portátiles", entidad.category)
         assertNotNull(entidad.thumbnail)
     }
 

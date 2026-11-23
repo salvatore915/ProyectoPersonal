@@ -193,6 +193,7 @@ class MainActivity : AppCompatActivity() {
                             intent.putExtra("NOMBRE_EXTRA", nombre)
                             intent.putExtra("PRECIO_EXTRA", precio)
                             intent.putExtra("CATEGORIA_EXTRA", categoria)
+                            intent.putExtra("FOTO_EXTRA", fotoPath)
                             startActivity(intent)
                         } catch (e: Exception) {
                             e.printStackTrace()
