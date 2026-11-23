@@ -34,17 +34,19 @@ class SecondActivity : AppCompatActivity() {
         textoNombre.text = nombre
         textoDetalle.text = "Categoría: $categoria\nPrecio: $precio €"
 
-        // Carga la foto local si existe o asigna un dibujo según la categoría
-        val bitmap = Fotos.cargar(fotoPath)
-        if (bitmap != null) {
-            imagenResultado.setImageBitmap(bitmap)
-        } else {
-            when (categoria.uppercase()) {
-                "CPU" -> imagenResultado.setImageResource(R.drawable.img_cpu)
-                "GPU" -> imagenResultado.setImageResource(R.drawable.img_gpu)
-                "RAM" -> imagenResultado.setImageResource(R.drawable.img_ram)
-                "DISCO" -> imagenResultado.setImageResource(R.drawable.img_storage)
-                else -> imagenResultado.setImageResource(R.drawable.img_other)
+        // Asigna el dibujo según la categoría, o la foto si no es una categoría estándar
+        when (categoria.uppercase()) {
+            "CPU"   -> imagenResultado.setImageResource(R.drawable.img_cpu)
+            "GPU"   -> imagenResultado.setImageResource(R.drawable.img_gpu)
+            "RAM"   -> imagenResultado.setImageResource(R.drawable.img_ram)
+            "DISCO" -> imagenResultado.setImageResource(R.drawable.img_storage)
+            else -> {
+                val bitmap = Fotos.cargar(fotoPath)
+                if (bitmap != null) {
+                    imagenResultado.setImageBitmap(bitmap)
+                } else {
+                    imagenResultado.setImageResource(R.drawable.img_other)
+                }
             }
         }
 
