@@ -1,7 +1,9 @@
 Memoria técnica · Versión 2
 
 Proyecto: TORRECOMS Configurador de PC
+
 Autor: Salvador Gómez
+
 Rama: Proyecto-V2
 
 
@@ -26,7 +28,7 @@ Cómo funciona sin conexión (CatalogoRepository):
 
 Primero, se pide el catálogo a la API. Si responde, se guarda en Room y se muestra.
 
-Segundo, si falla la red, se leen los datos guardados en Room y se muestran con un aviso de "sin conexión".
+Segundo, si falla la red, se leen los datos guardados en Room y se muestran con un aviso de sin conexión.
 
 Tercero, si tampoco hay datos guardados, se muestra un mensaje de error con el botón Reintentar.
 
@@ -38,7 +40,9 @@ La app no se cierra por falta de red. Glide guarda en su propia caché las imág
 El flujo de la app es este:
 
 CatalogoActivity usa CatalogoViewModel.
+
 CatalogoViewModel usa CatalogoRepository.
+
 CatalogoRepository usa tres cosas: ApiService (la red), ProductoOnlineDao (Room) y ComponenteDao (Room).
 
 Vista: CatalogoActivity muestra la lista, la búsqueda y los filtros. DetalleProductoActivity muestra la ficha del producto. CatalogoAdapter es el RecyclerView que usa Glide para las imágenes.
@@ -52,9 +56,13 @@ Repositorio: decide si usar la red o Room. DetalleProductoActivity consulta el r
 
 Añadir un producto del catálogo a mis componentes.
 
-En la pantalla de detalle, el botón "Añadir a mis componentes" crea un Componente con el título y el precio del producto y lo guarda en la tabla componentes. Así aparece en la lista y en los totales de la V1.
+En la pantalla de detalle, el botón Añadir a mis componentes crea un Componente con el título y el precio del producto y lo guarda en la tabla componentes. Así aparece en la lista y en los totales de la V1.
 
-La categoría local es "Otro", salvo que el título contenga estas palabras: si contiene SSD o Disk, la categoría es Disco. Si contiene RAM o Memory, la categoría es RAM. Si contiene CPU o Processor, la categoría es CPU.
+Al añadir el producto también se descarga su imagen y se guarda en el móvil, para que aparezca en el historial.
+
+La categoría local es Otro, salvo que el título contenga estas palabras: si contiene SSD o Disk, la categoría es Disco. Si contiene RAM o Memory, la categoría es RAM. Si contiene CPU o Processor, la categoría es CPU. Los portátiles siempre entran como Otro.
+
+En la ficha del producto, la descripción se traduce al español con el servicio de traducción de Google. Si la traducción falla, se muestra el texto original en inglés.
 
 Además hay búsqueda por texto y filtros por categoría: Todos, Laptops y Accesorios.
 
