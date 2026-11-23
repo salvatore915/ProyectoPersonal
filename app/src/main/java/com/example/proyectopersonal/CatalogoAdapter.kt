@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import java.util.Locale
 
+// Adaptador que conecta la lista de productos online con el RecyclerView y gestiona clics
 class CatalogoAdapter(
     private var productos: List<ProductoOnline>,
     private val onItemClick: (ProductoOnline) -> Unit
 ) : RecyclerView.Adapter<CatalogoAdapter.ProductoViewHolder>() {
 
+    // Guarda las referencias a las vistas de cada fila para reutilizarlas al hacer scroll
     class ProductoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imagen: ImageView = view.findViewById(R.id.ivProductoOnline)
         val tvTitulo: TextView = view.findViewById(R.id.tvTituloOnline)
@@ -22,12 +24,14 @@ class CatalogoAdapter(
         val tvPrecio: TextView = view.findViewById(R.id.tvPrecioOnline)
     }
 
+    // Infla el diseño XML de una fila y crea su ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
         val vista = LayoutInflater.from(parent.context)
             .inflate(R.layout.fila_producto_online, parent, false)
         return ProductoViewHolder(vista)
     }
 
+    // Rellena los datos y la imagen del producto correspondiente a la posición actual
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val item = productos[position]
 
@@ -44,13 +48,16 @@ class CatalogoAdapter(
             .centerCrop()
             .into(holder.imagen)
 
+        // Notifica a la actividad qué producto se ha pulsado
         holder.itemView.setOnClickListener {
             onItemClick(item)
         }
     }
 
+    // Devuelve el número total de elementos mostrados en la lista
     override fun getItemCount(): Int = productos.size
 
+    // Sustituye los datos actuales y refresca la vista del RecyclerView
     fun actualizarLista(nuevaLista: List<ProductoOnline>) {
         this.productos = nuevaLista
         notifyDataSetChanged()

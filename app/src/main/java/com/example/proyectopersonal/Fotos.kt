@@ -8,7 +8,9 @@ import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
 
+// Utilidad singleton para crear, copiar, cargar y exponer archivos de fotos en el almacenamiento interno
 object Fotos {
+    // Crea y devuelve un archivo temporal JPG dentro de la carpeta fotos de la app
     fun crearArchivo(context: Context): File {
         val directorio = File(context.filesDir, "fotos")
         if (!directorio.exists()) {
@@ -17,6 +19,7 @@ object Fotos {
         return File.createTempFile("foto_", ".jpg", directorio)
     }
 
+    // Genera una Uri segura mediante FileProvider para compartir el archivo con otras apps o cámara
     fun uriDe(context: Context, archivo: File): Uri {
         return FileProvider.getUriForFile(
             context,
@@ -25,6 +28,7 @@ object Fotos {
         )
     }
 
+    // Copia el contenido de una Uri externa a un archivo interno y devuelve su ruta absoluta
     fun copiarDesdeUri(context: Context, uri: Uri): String? {
         return try {
             val archivo = crearArchivo(context)
@@ -40,6 +44,7 @@ object Fotos {
         }
     }
 
+    // Lee un archivo desde su ruta y lo decodifica como Bitmap si existe
     fun cargar(path: String?): Bitmap? {
         if (path == null) return null
         val archivo = File(path)

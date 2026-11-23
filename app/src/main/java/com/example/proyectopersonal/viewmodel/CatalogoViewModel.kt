@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+// Estados posibles que la UI observará para renderizar carga, datos o error
 sealed class CatalogoUiState {
     object Loading : CatalogoUiState()
     data class Success(
@@ -21,22 +22,29 @@ sealed class CatalogoUiState {
     data class Error(val mensaje: String) : CatalogoUiState()
 }
 
+// ViewModel que gestiona el estado de la pantalla de catálogo y delega la obtención de datos al repositorio
 class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel() {
 
+    // Flujo mutable interno y versión inmutable expuesta hacia la vista
     private val _uiState = MutableStateFlow<CatalogoUiState>(CatalogoUiState.Loading)
     val uiState: StateFlow<CatalogoUiState> = _uiState.asStateFlow()
 
+    // Copia completa en memoria para poder filtrar por categoría sin volver a consultar
     private var todosLosProductos: List<ProductoOnline> = emptyList()
 
+    // Indica si la última carga provino de la caché local de Room
     private var cargadoDesdeCache = false
 
+    // Devuelve un aviso si los datos actuales vienen de caché, o null si vienen de red
     private fun avisoCarga(): String? =
         if (cargadoDesdeCache) "Modo sin conexión: mostrando catálogo guardado en Room." else null
 
+    // Carga inicial automática al crear el ViewModel
     init {
         cargarProductos()
     }
 
+    // Solicita los productos al repositorio y actualiza `uiState` según el resultado
     fun cargarProductos(forzarRed: Boolean = false) {
         viewModelScope.launch {
             _uiState.value = CatalogoUiState.Loading
@@ -57,6 +65,7 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
         }
     }
 
+    // Busca productos por texto; si el texto está vacío, restaura la lista ya cargada
     fun buscar(query: String) {
         viewModelScope.launch {
             if (query.isBlank()) {
@@ -84,6 +93,7 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
         }
     }
 
+    // Filtra en memoria los productos cargados según la categoría seleccionada
     fun filtrarPorCategoria(categoria: String) {
         val lista = if (categoria == "Todos") {
             todosLosProductos
@@ -98,6 +108,7 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
     }
 }
 
+// Factory necesaria para instanciar CatalogoViewModel pasando `repository` por constructor
 class CatalogoViewModelFactory(private val repository: CatalogoRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CatalogoViewModel::class.java)) {

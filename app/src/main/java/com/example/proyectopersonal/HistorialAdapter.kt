@@ -10,11 +10,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.widget.ImageButton
 
+// Adaptador que muestra la lista de componentes locales en el RecyclerView y gestiona clics o borrados
 class HistorialAdapter(
     private val componentes: MutableList<Componente>,
     private val onItemDeleted: (Componente) -> Unit
 ) : RecyclerView.Adapter<HistorialAdapter.ComponenteViewHolder>() {
 
+    // Guarda las referencias a las vistas de cada fila del historial
     class ComponenteViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imagenCategoria: ImageView = view.findViewById(R.id.imagenCategoriaFila)
         val ivFoto: ImageView = view.findViewById(R.id.ivFoto)
@@ -24,18 +26,21 @@ class HistorialAdapter(
         val botonEliminar: ImageButton = view.findViewById(R.id.botonEliminarFila)
     }
 
+    // Infla el diseño XML de una fila y crea su ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComponenteViewHolder {
         val vista = LayoutInflater.from(parent.context)
             .inflate(R.layout.fila_componente, parent, false)
         return ComponenteViewHolder(vista)
     }
 
+    // Rellena los datos, imágenes y acciones de cada fila según su posición
     override fun onBindViewHolder(holder: ComponenteViewHolder, position: Int) {
         val componente = componentes[position]
         holder.textoNombre.text = componente.nombre
         holder.textoCategoria.text = "Categoría: ${componente.categoria}"
         holder.textoPrecio.text = "${componente.precio} €"
 
+        // Recupera la foto de perfil guardada en SharedPreferences o una alternativa de la lista
         val context = holder.itemView.context
         val prefs = context.getSharedPreferences("MisDatos", Context.MODE_PRIVATE)
         val fotoPerfilPrefs = prefs.getString("FOTO_PERFIL", null)
@@ -44,10 +49,12 @@ class HistorialAdapter(
             it.categoria.uppercase() in listOf("CPU", "GPU", "RAM", "DISCO") && !it.fotoPath.isNullOrBlank()
         }?.fotoPath
 
+        // Carga los bitmaps de la foto de respaldo y de la foto propia del componente
         val bitmapPerfilPersona = Fotos.cargar(fotoPerfilPersona)
         val bitmapComponente = Fotos.cargar(componente.fotoPath)
         val categoria = (componente.categoria ?: "").uppercase()
 
+        // Asigna el icono de categoría y decide qué imagen mostrar en cada ImageView
         if (categoria in listOf("CPU", "GPU", "RAM", "DISCO")) {
             when (categoria) {
                 "CPU" -> holder.imagenCategoria.setImageResource(R.drawable.img_cpu)
@@ -80,6 +87,7 @@ class HistorialAdapter(
             }
         }
 
+        // Abre SecondActivity pasando los datos del componente pulsado mediante extras
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, SecondActivity::class.java)
             intent.putExtra("NOMBRE_EXTRA", componente.nombre)
@@ -89,6 +97,7 @@ class HistorialAdapter(
             holder.itemView.context.startActivity(intent)
         }
 
+        // Verifica la posición actual de forma segura y notifica el borrado del componente
         holder.botonEliminar.setOnClickListener {
             val pos = holder.bindingAdapterPosition
             if (pos != RecyclerView.NO_POSITION && pos < componentes.size) {
@@ -97,5 +106,6 @@ class HistorialAdapter(
         }
     }
 
+    // Devuelve la cantidad total de componentes en el adaptador
     override fun getItemCount(): Int = componentes.size
 }

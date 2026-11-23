@@ -20,8 +20,10 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.Locale
 
+// Actividad que muestra el detalle completo de un producto y permite guardarlo en componentes locales
 class DetalleProductoActivity : AppCompatActivity() {
 
+    // Referencias a los elementos visuales de la pantalla de detalle
     private lateinit var ivFoto: ImageView
     private lateinit var tvTitulo: TextView
     private lateinit var tvMarca: TextView
@@ -33,6 +35,7 @@ class DetalleProductoActivity : AppCompatActivity() {
     private lateinit var btnAgregar: Button
     private lateinit var tvConfirmacion: TextView
 
+    // Inicializa el repositorio de forma perezosa con la base de datos y el cliente de red
     private val repository by lazy {
         val db = AppDatabase.obtener(this)
         CatalogoRepository(
@@ -42,12 +45,15 @@ class DetalleProductoActivity : AppCompatActivity() {
         )
     }
 
+    // Guarda el producto cargado actualmente para añadirlo a la base de datos local
     private var productoActual: ProductoOnline? = null
 
+    // Configura la interfaz, recupera el ID recibido y prepara las acciones de los botones
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalle_producto)
 
+        // Obtiene los botones y vistas de la pantalla de detalle
         val btnVolver = findViewById<Button>(R.id.btnVolverDetalle)
         ivFoto = findViewById(R.id.ivDetalleProducto)
         tvTitulo = findViewById(R.id.tvDetalleTitulo)
@@ -60,8 +66,10 @@ class DetalleProductoActivity : AppCompatActivity() {
         btnAgregar = findViewById(R.id.btnAgregarAlPresupuesto)
         tvConfirmacion = findViewById(R.id.tvConfirmacionGuardado)
 
+        // Cierra la actividad y vuelve a la pantalla anterior
         btnVolver.setOnClickListener { finish() }
 
+        // Recupera el ID del producto enviado desde la pantalla anterior y solicita su detalle
         val productoId = intent.getIntExtra("PRODUCTO_ID", -1)
         if (productoId != -1) {
             cargarDetalle(productoId)
@@ -70,6 +78,7 @@ class DetalleProductoActivity : AppCompatActivity() {
             finish()
         }
 
+        // Descarga la imagen si existe y guarda el producto como componente local en Room
         btnAgregar.setOnClickListener {
             val producto = productoActual ?: return@setOnClickListener
             btnAgregar.isEnabled = false
@@ -92,6 +101,7 @@ class DetalleProductoActivity : AppCompatActivity() {
     private fun traducirTextoEnSegundoPlano(textoIngles: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
+                // Codifica el texto y realiza la petición HTTP al servicio de traducción
                 val encoded = URLEncoder.encode(textoIngles, "UTF-8")
                 val url = URL("https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=es&dt=t&q=$encoded")
                 val con = url.openConnection() as HttpURLConnection
@@ -99,6 +109,7 @@ class DetalleProductoActivity : AppCompatActivity() {
                 con.connectTimeout = 4000
                 con.readTimeout = 4000
                 if (con.responseCode == 200) {
+                    // Extrae y concatena los fragmentos traducidos desde la respuesta JSON
                     val respuesta = con.inputStream.bufferedReader().use { it.readText() }
                     val jsonArray = JsonParser.parseString(respuesta).asJsonArray
                     val partes = jsonArray.get(0).asJsonArray
@@ -107,6 +118,7 @@ class DetalleProductoActivity : AppCompatActivity() {
                         sb.append(elemento.asJsonArray.get(0).asString)
                     }
                     val textoTraducido = sb.toString()
+                    // Actualiza la descripción en el hilo principal si la traducción no está vacía
                     if (textoTraducido.isNotBlank()) {
                         withContext(Dispatchers.Main) {
                             tvDescripcion.text = textoTraducido
@@ -119,6 +131,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         }
     }
 
+    // Descarga la imagen desde la URL a un archivo local y devuelve su ruta absoluta
     private suspend fun descargarFoto(url: String?): String? = withContext(Dispatchers.IO) {
         if (url.isNullOrBlank()) return@withContext null
         val archivo = Fotos.crearArchivo(this@DetalleProductoActivity)
@@ -128,11 +141,13 @@ class DetalleProductoActivity : AppCompatActivity() {
             }
             archivo.absolutePath
         } catch (e: Exception) {
+            // Elimina el archivo incompleto si ocurre algún error durante la descarga
             archivo.delete()
             null
         }
     }
 
+    // Consulta los datos del producto por ID en el repositorio y actualiza la vista
     private fun cargarDetalle(id: Int) {
         lifecycleScope.launch {
             val producto = repository.obtenerDetalle(id)
@@ -145,6 +160,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         }
     }
 
+    // Rellena los campos visuales con la información del producto y dispara la traducción
     private fun mostrarProducto(p: ProductoOnline) {
         tvTitulo.text = p.title
         tvMarca.text = p.brand ?: "Marca oficial"
@@ -157,6 +173,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         // Ejecuta la traducción en segundo plano
         traducirTextoEnSegundoPlano(p.description)
 
+        // Carga la imagen principal del producto con Glide
         Glide.with(this)
             .load(p.thumbnail)
             .placeholder(android.R.drawable.ic_menu_gallery)
