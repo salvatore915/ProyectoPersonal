@@ -28,26 +28,19 @@ class SecondActivity : AppCompatActivity() {
         val nombre = intent.getStringExtra("NOMBRE_EXTRA") ?: "Sin nombre"
         val precio = intent.getDoubleExtra("PRECIO_EXTRA", 0.0)
         val categoria = intent.getStringExtra("CATEGORIA_EXTRA") ?: "Otro"
-        val fotoPath = intent.getStringExtra("FOTO_EXTRA")
 
         // Muestra el nombre, la categoría y el precio del componente
         textoNombre.text = nombre
         textoDetalle.text = "Categoría: $categoria\nPrecio: $precio €"
 
-        // Asigna el dibujo según la categoría, o la foto si no es una categoría estándar
+        // Asigna la imagen correspondiente a cada categoría
         when (categoria.uppercase()) {
             "CPU"   -> imagenResultado.setImageResource(R.drawable.img_cpu)
             "GPU"   -> imagenResultado.setImageResource(R.drawable.img_gpu)
             "RAM"   -> imagenResultado.setImageResource(R.drawable.img_ram)
             "DISCO" -> imagenResultado.setImageResource(R.drawable.img_storage)
-            else -> {
-                val bitmap = Fotos.cargar(fotoPath)
-                if (bitmap != null) {
-                    imagenResultado.setImageBitmap(bitmap)
-                } else {
-                    imagenResultado.setImageResource(R.drawable.img_other)
-                }
-            }
+            "OTRO"  -> imagenResultado.setImageResource(R.drawable.img_other)
+            else    -> imagenResultado.setImageResource(R.drawable.img_other)
         }
 
         // Elige un sonido distinto según el umbral de precio del componente
