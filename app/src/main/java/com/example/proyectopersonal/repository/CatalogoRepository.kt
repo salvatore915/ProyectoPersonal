@@ -34,13 +34,11 @@ class CatalogoRepository(
             val listaCompleta = listaLaptops + listaAccesorios
 
             if (listaCompleta.isNotEmpty()) {
-                // Guardamos en Room para disponibilidad sin conexión
                 productoDao.insertarTodos(listaCompleta)
             }
 
             ResultadoCatalogo.Exito(productos = listaCompleta, esDesdeCache = false)
         } catch (e: Exception) {
-            // Ante fallo de conexión, consultamos Room
             val cache = try {
                 productoDao.obtenerTodos()
             } catch (dbEx: Exception) {
@@ -72,7 +70,6 @@ class CatalogoRepository(
             }
             ResultadoCatalogo.Exito(productos = productos, esDesdeCache = false)
         } catch (e: Exception) {
-            // Fallback de búsqueda en base de datos local
             val cache = try {
                 productoDao.buscar(queryLimpio)
             } catch (dbEx: Exception) {
@@ -89,23 +86,6 @@ class CatalogoRepository(
             }
         }
     }
-
-    suspend fun filtrarPorCategoria(categoria: String): ResultadoCatalogo = withContext(Dispatchers.IO) {
-        if (categoria == "Todos" || categoria.isEmpty()) {
-            return@withContext obtenerProductos()
-        }
-
-        try {
-            val cache = productoDao.obtenerPorCategoria(categoria.lowercase())
-            if (cache.isNotEmpty()) {
-                return@withContext ResultadoCatalogo.Exito(productos = cache, esDesdeCache = false)
-            }
-            obtenerProductos()
-        } catch (e: Exception) {
-            obtenerProductos()
-        }
-    }
-
     suspend fun obtenerDetalle(id: Int): ProductoOnline? = withContext(Dispatchers.IO) {
         try {
             val dto = api.getProductById(id)

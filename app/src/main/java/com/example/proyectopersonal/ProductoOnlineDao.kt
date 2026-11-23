@@ -25,10 +25,4 @@ interface ProductoOnlineDao {
 
     @Query("SELECT * FROM productos_online WHERE title LIKE '%' || :query || '%' OR description LIKE '%' || :query || '%' OR brand LIKE '%' || :query || '%'")
     suspend fun buscar(query: String): List<ProductoOnline>
-
-    @Query("DELETE FROM productos_online")
-    suspend fun borrarTodos()
-
-    @Query("SELECT COUNT(*) FROM productos_online")
-    suspend fun contar(): Int
 }

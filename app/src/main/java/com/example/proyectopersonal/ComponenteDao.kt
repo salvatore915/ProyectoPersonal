@@ -17,9 +17,6 @@ interface ComponenteDao {
     @Delete
     suspend fun borrar(componente: Componente)
 
-    @Update
-    suspend fun actualizar(componente: Componente)
-
     @Query("SELECT COUNT(*) FROM componentes")
     suspend fun contarComponentes(): Int
 

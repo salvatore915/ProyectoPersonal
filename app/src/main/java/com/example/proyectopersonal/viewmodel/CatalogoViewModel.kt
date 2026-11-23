@@ -94,13 +94,6 @@ class CatalogoViewModel(private val repository: CatalogoRepository) : ViewModel(
             esOffline = false
         )
     }
-
-    fun agregarAlPresupuestoLocal(producto: ProductoOnline, onResultado: (Boolean) -> Unit) {
-        viewModelScope.launch {
-            val exito = repository.agregarAComponentesLocales(producto)
-            onResultado(exito)
-        }
-    }
 }
 
 class CatalogoViewModelFactory(private val repository: CatalogoRepository) : ViewModelProvider.Factory {
