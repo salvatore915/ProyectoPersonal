@@ -72,7 +72,10 @@ class CatalogoRepository(
 
         try {
             val response = api.searchProducts(queryLimpio)
-            val productos = response.products.map { it.toEntity() }
+            val categoriaPermitidas = listOf("laptops", "mobile-accessories")
+            val productos = response.products
+                .filter { it.category.lowercase() in categoriaPermitidas }
+                .map { it.toEntity() }
             if (productos.isNotEmpty()) {
                 productoDao.insertarTodos(productos)
             }
