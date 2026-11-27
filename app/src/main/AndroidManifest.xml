@@ -18,17 +18,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoPersonal">
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.ProyectoPersonal"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SecondActivity"
             android:exported="false" />
