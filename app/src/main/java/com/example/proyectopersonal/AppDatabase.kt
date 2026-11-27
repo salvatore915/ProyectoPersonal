@@ -23,10 +23,10 @@ abstract class AppDatabase : RoomDatabase() {
             return instancia ?: synchronized(this) {
                 // Evita que dos hilos creen la base de datos a la vez
                 val nueva = Room.databaseBuilder(
-                    context.applicationContext, // Usa el contexto de aplicación para evitar fugas de memoria
-                    AppDatabase::class.java,
-                    "componentes_db" // Nombre del archivo de base de datos en el dispositivo
-                ).fallbackToDestructiveMigration().build() // Recrea tablas si sube la versión sin migración manual
+                                context.applicationContext, // Usa el contexto de aplicación para evitar fugas de memoria
+                                AppDatabase::class.java,
+                                "componentes_db" // Nombre del archivo de base de datos en el dispositivo
+                            ).fallbackToDestructiveMigration(false).build() // Recrea tablas si sube la versión sin migración manual
                 instancia = nueva
                 nueva
             }
