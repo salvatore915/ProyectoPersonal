@@ -20,6 +20,8 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -89,7 +91,22 @@ class MainActivity : AppCompatActivity() {
     // Inicializa vistas, recupera datos guardados y configura validaciones y navegación
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Sin sesión no se puede usar la app: vuelve a Login
+        val usuario = FirebaseAuth.getInstance().currentUser
+        if (usuario == null) {
+            irALogin()
+            return
+        }
+
         setContentView(R.layout.activity_main)
+
+        // Muestra el saludo y configura el cierre de sesión
+        mostrarSaludo(usuario.uid)
+        findViewById<Button>(R.id.btnCerrarSesion).setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            irALogin()
+        }
 
         // Obtiene los campos del formulario y los botones principales
         val editNombre = findViewById<EditText>(R.id.editNombre)
@@ -213,6 +230,28 @@ class MainActivity : AppCompatActivity() {
         botonCatalogoOnline.setOnClickListener {
             startActivity(Intent(this, CatalogoActivity::class.java))
         }
+    }
+
+    // Lee usuarios/{uid} en Firestore y escribe el saludo cuando llega la respuesta
+    private fun mostrarSaludo(uid: String) {
+        val tvSaludo = findViewById<TextView>(R.id.tvSaludo)
+        FirebaseFirestore.getInstance().collection("usuarios").document(uid).get()
+            .addOnSuccessListener { documento ->
+                val nombre = documento.getString("nombre")
+                tvSaludo.text = if (nombre.isNullOrBlank()) "Hola" else "Hola, $nombre"
+            }
+            .addOnFailureListener {
+                tvSaludo.text = "Hola"
+                Toast.makeText(this, "No se ha podido cargar tu perfil", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // Abre Login borrando el historial, para que el botón atrás no regrese aquí
+    private fun irALogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 
     // Actualiza el resumen de cantidad y precio total cada vez que la pantalla vuelve a verse
